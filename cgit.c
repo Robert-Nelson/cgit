@@ -299,6 +299,12 @@ static void config_cb(const char *name, const char *value)
 		add_mimetype(arg, value);
 	else if (!strcmp(name, "include"))
 		parse_configfile(expand_macros(value), config_cb);
+	else if (!strcmp(name, "syntax-theme-dir"))
+		ctx.cfg.syntax_theme_dir = xstrdup(value);
+	else if (!strcmp(name, "syntax-theme-default"))
+		ctx.cfg.syntax_theme_default = xstrdup(value);
+	else if (!strcmp(name, "syntax-theme-list"))
+		ctx.cfg.syntax_theme_list = xstrdup(value);
 }
 
 static void querystring_cb(const char *name, const char *value)
@@ -356,6 +362,8 @@ static void querystring_cb(const char *name, const char *value)
 		ctx.qry.ignorews = atoi(value);
 	} else if (!strcmp(name, "follow")) {
 		ctx.qry.follow = atoi(value);
+	} else if (!strcmp(name, "theme")) {
+		ctx.qry.syntax_theme = strdup(value);
 	}
 }
 
@@ -407,6 +415,9 @@ static void prepare_context(void)
 	ctx.cfg.summary_tags = 10;
 	ctx.cfg.max_atom_items = 10;
 	ctx.cfg.difftype = DIFF_UNIFIED;
+	ctx.cfg.syntax_theme_dir = NULL;
+	ctx.cfg.syntax_theme_default = NULL;
+	ctx.cfg.syntax_theme_list = NULL;
 	ctx.env.cgit_config = getenv("CGIT_CONFIG");
 	ctx.env.http_host = getenv("HTTP_HOST");
 	ctx.env.https = getenv("HTTPS");

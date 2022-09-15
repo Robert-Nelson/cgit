@@ -188,6 +188,7 @@ struct cgit_query {
 	int ignorews;
 	int follow;
 	char *vpath;
+	char *syntax_theme;
 };
 
 struct cgit_config {
@@ -215,6 +216,9 @@ struct cgit_config {
 	char *repository_sort;
 	char *virtual_root;	/* Always ends with '/'. */
 	char *strict_export;
+	char *syntax_theme_dir;
+	char *syntax_theme_default;
+	char *syntax_theme_list;
 	int cache_size;
 	int cache_dynamic_ttl;
 	int cache_max_create_time;

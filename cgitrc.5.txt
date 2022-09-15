@@ -422,6 +422,17 @@ source-filter::
 	this can be used to implement e.g. syntax highlighting. Default value:
 	none. See also: "FILTER API".
 
+syntax-theme-dir::
+	The directory containing the CSS Style information files for each of the 
+	themes. These files are generated once during installation using the 
+	highlight-theme-to-cgit.sh script.
+
+syntax-theme-list::
+	List of theme names one per line
+
+syntax-theme-default::
+	Name of theme selected by default initially.
+
 summary-branches::
 	Specifies the number of branches to display in the repository "summary"
 	view. Default value: "10".
@@ -892,6 +903,19 @@ mimetype.svg=image/svg+xml
 
 # Highlight source code with python pygments-based highlighter
 source-filter=/var/www/cgit/filters/syntax-highlighting.py
+
+# #
+# # Alternate Syntax Highlighter based on the separate Highlight package.
+# #
+# # Directory containing the per theme css files for syntax formatting 
+# syntax-theme-dir=/cgit-data/themes/
+# 
+# # List of theme names one per line
+# syntax-theme-list=/usr/share/cgit/themes/syntax-theme-list
+# 
+# # Default theme
+# syntax-theme-default=light-background
+# 
 
 # Format markdown, restructuredtext, manpages, text files, and html files
 # through the right converters

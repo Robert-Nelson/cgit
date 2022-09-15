@@ -790,6 +790,16 @@ void cgit_print_docstart(void)
 	html("<link rel='stylesheet' type='text/css' href='");
 	html_attr(ctx.cfg.css);
 	html("'/>\n");
+	if (!strcmp(ctx.qry.page, "tree") && ctx.cfg.syntax_theme_dir) {
+		if (ctx.qry.syntax_theme == NULL) {
+			ctx.qry.syntax_theme = strdup(ctx.cfg.syntax_theme_default);
+		}
+		html("<link rel='stylesheet' type='text/css' href='");
+		html_attr(ctx.cfg.syntax_theme_dir);
+		html_attr(ctx.qry.syntax_theme);
+		html_attr(".css");
+		html("'/>\n");
+	}
 	if (ctx.cfg.favicon) {
 		html("<link rel='shortcut icon' href='");
 		html_attr(ctx.cfg.favicon);
@@ -1061,7 +1071,37 @@ void cgit_print_pageheader(void)
 			html_attr(ctx.repo->homepage);
 			html("'>homepage</a>");
 		}
-		html("</td><td class='form'>");
+		html("</td>\n");
+		if (!strcmp(ctx.qry.page, "tree") && ctx.cfg.syntax_theme_list) {
+			FILE* fp;
+			html("<td class='form'>");
+			html("<form class='right' method='get' action='");
+			if (ctx.cfg.virtual_root) {
+				char *fileurl = cgit_fileurl(ctx.qry.repo, ctx.qry.page,
+							   ctx.qry.vpath, NULL);
+				html_url_path(fileurl);
+				free(fileurl);
+			}
+			html("'>\n");
+			if ((fp = fopen(ctx.cfg.syntax_theme_list, "r")) != NULL) {
+				//cgit_add_hidden_formfields(1, 0, "log");
+				html("<select name='theme'>\n");
+				do {
+					char	theme_name[80];
+					if (fgets(theme_name, sizeof(theme_name)-1, fp) != NULL) {
+						theme_name[sizeof(theme_name)-1] = '\0';
+						theme_name[strlen(theme_name)-1] = '\0';
+						html_option(theme_name, theme_name, ctx.qry.syntax_theme);
+					}
+				} while (!feof(fp) && !ferror(fp));
+				fclose(fp);
+				html("</select>\n");
+				html("<input type='submit' value='Theme'/>");
+			}
+			html("\n");
+			html("</form>\n</td>");
+		}
+		html("<td class='form'>");
 		html("<form class='right' method='get' action='");
 		if (ctx.cfg.virtual_root) {
 			char *fileurl = cgit_fileurl(ctx.qry.repo, "log",

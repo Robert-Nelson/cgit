@@ -115,7 +115,12 @@ EXTENSION="${BASENAME##*.}"
 # found (for example) on EPEL 6.
 #
 # This is for version 2
-exec highlight --force -f -I -X -S "$EXTENSION" 2>/dev/null
+echo -e '<pre class="hl">'
+highlight --force -f -I -X -S "$EXTENSION" 2>/dev/null
+echo -e '</pre>'
 
 # This is for version 3
 #exec highlight --force -f -I -O xhtml -S "$EXTENSION" 2>/dev/null
+echo -e '<pre class="hl">'
+highlight --force -f -I -O xhtml -S "$EXTENSION" 2>/dev/null
+echo -e '</pre>'
